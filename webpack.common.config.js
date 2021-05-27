@@ -72,6 +72,7 @@ module.exports = Merge.smart({
             // Studio
             Import: './cms/static/js/features/import/factories/import.js',
             CourseOrLibraryListing: './cms/static/js/features_jsx/studio/CourseOrLibraryListing.jsx',
+            TeamsConfiguration: './cms/static/js/features_jsx/studio/TeamsConfiguration/index.jsx',
             LibrarySourcedBlockPicker: './common/lib/xmodule/xmodule/assets/library_source_block/LibrarySourcedBlockPicker.jsx',  // eslint-disable-line max-len
             'js/factories/textbooks': './cms/static/js/factories/textbooks.js',
             'js/factories/container': './cms/static/js/factories/container.js',
@@ -96,7 +97,6 @@ module.exports = Merge.smart({
             DemographicsCollectionBanner: './lms/static/js/demographics_collection/DemographicsCollectionBanner.jsx',
             DemographicsCollectionModal: './lms/static/js/demographics_collection/DemographicsCollectionModal.jsx',
             AxiosJwtTokenService: './lms/static/js/jwt_auth/AxiosJwtTokenService.js',
-            EnterpriseLearnerPortalModal: './lms/static/js/learner_dashboard/EnterpriseLearnerPortalModal.jsx',
 
             // Learner Dashboard
             EntitlementFactory: './lms/static/js/learner_dashboard/course_entitlement_factory.js',
