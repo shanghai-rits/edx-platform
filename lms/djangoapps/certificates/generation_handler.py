@@ -13,6 +13,7 @@ from edx_toggles.toggles import LegacyWaffleFlagNamespace
 from common.djangoapps.course_modes import api as modes_api
 from common.djangoapps.student.models import CourseEnrollment
 from lms.djangoapps.certificates.data import CertificateStatuses
+from lms.djangoapps.certificates.generation import generate_course_certificate
 from lms.djangoapps.certificates.models import (
     CertificateInvalidation,
     CertificateWhitelist,
@@ -260,7 +261,8 @@ def _set_v2_cert_status(user, course_key):
     course_grade = _get_course_grade(user, course_key)
     if not course_grade.passed:
         if cert is None:
-            cert = GeneratedCertificate.objects.create(user=user, course_id=course_key)
+            cert = generate_course_certificate(user=user, course_key=course_key, generation_mode='batch',
+                                               status=CertificateStatuses.notpassing)
         if cert.status != CertificateStatuses.notpassing:
             cert.mark_notpassing(course_grade.percent, source='certificate_generation')
         return CertificateStatuses.notpassing
@@ -277,14 +279,16 @@ def _get_cert_status_common(user, course_key, cert):
     """
     if CertificateInvalidation.has_certificate_invalidation(user, course_key):
         if cert is None:
-            cert = GeneratedCertificate.objects.create(user=user, course_id=course_key)
+            cert = generate_course_certificate(user=user, course_key=course_key, generation_mode='batch',
+                                               status=CertificateStatuses.unavailable)
         if cert.status != CertificateStatuses.unavailable:
             cert.invalidate(source='certificate_generation')
         return CertificateStatuses.unavailable
 
     if not IDVerificationService.user_is_verified(user):
         if cert is None:
-            cert = GeneratedCertificate.objects.create(user=user, course_id=course_key)
+            cert = generate_course_certificate(user=user, course_key=course_key, generation_mode='batch',
+                                               status=CertificateStatuses.unverified)
         if cert.status != CertificateStatuses.unverified:
             cert.mark_unverified(source='certificate_generation')
         return CertificateStatuses.unverified

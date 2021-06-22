@@ -8,6 +8,8 @@ import ddt
 from edx_toggles.toggles.testutils import override_waffle_flag
 
 from common.djangoapps.student.tests.factories import CourseEnrollmentFactory, UserFactory
+from lms.djangoapps.certificates.api import get_certificate_for_user
+from lms.djangoapps.certificates.data import CertificateStatuses
 from lms.djangoapps.certificates.generation_handler import (
     CERTIFICATES_USE_UPDATED,
     _can_generate_allowlist_certificate,
@@ -22,7 +24,6 @@ from lms.djangoapps.certificates.generation_handler import (
     _set_allowlist_cert_status,
     _set_v2_cert_status
 )
-from lms.djangoapps.certificates.data import CertificateStatuses
 from lms.djangoapps.certificates.models import GeneratedCertificate
 from lms.djangoapps.certificates.tests.factories import (
     CertificateAllowlistFactory,
@@ -61,7 +62,7 @@ class AllowlistTests(ModuleStoreTestCase):
             user=self.user,
             course_id=self.course_run_key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
 
         # Add user to the allowlist
@@ -82,7 +83,7 @@ class AllowlistTests(ModuleStoreTestCase):
             user=u,
             course_id=self.course_run_key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
         CertificateAllowlistFactory.create(course_id=self.course_run_key, user=u, whitelist=False)
         assert not is_on_certificate_allowlist(u, self.course_run_key)
@@ -180,7 +181,7 @@ class AllowlistTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="audit",
+            mode=GeneratedCertificate.MODES.audit,
         )
         CertificateAllowlistFactory.create(course_id=key, user=u)
 
@@ -198,7 +199,7 @@ class AllowlistTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
         assert not _can_generate_allowlist_certificate(u, key)
         assert _set_allowlist_cert_status(u, key) is None
@@ -214,7 +215,7 @@ class AllowlistTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
         cert = GeneratedCertificateFactory(
             user=u,
@@ -259,7 +260,7 @@ class AllowlistTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
         GeneratedCertificateFactory(
             user=u,
@@ -293,7 +294,7 @@ class CertificateTests(ModuleStoreTestCase):
             user=self.user,
             course_id=self.course_run_key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
 
     def test_handle_valid(self):
@@ -350,7 +351,14 @@ class CertificateTests(ModuleStoreTestCase):
             mode=GeneratedCertificate.MODES.verified,
         )
 
-        assert _set_v2_cert_status(different_user, self.course_run_key) == 'notpassing'
+        cert = get_certificate_for_user(username=different_user.username, course_key=self.course_run_key)
+        assert cert is None
+
+        assert _set_v2_cert_status(different_user, self.course_run_key) == CertificateStatuses.notpassing
+        cert = GeneratedCertificate.objects.get(user_id=different_user.id, course_id=self.course_run_key)
+        assert cert.status == CertificateStatuses.notpassing
+        assert cert.mode == GeneratedCertificate.MODES.verified
+
         assert generate_regular_certificate_task(different_user, self.course_run_key)
 
     def test_is_using_updated_true(self):
@@ -427,7 +435,15 @@ class CertificateTests(ModuleStoreTestCase):
         """
         with mock.patch(PASSING_GRADE_METHOD, return_value=False):
             assert not _can_generate_v2_certificate(self.user, self.course_run_key)
+
+            cert = get_certificate_for_user(username=self.user.username, course_key=self.course_run_key)
+            assert cert is None
+
             assert _set_v2_cert_status(self.user, self.course_run_key) == CertificateStatuses.notpassing
+            cert = GeneratedCertificate.objects.get(user_id=self.user.id, course_id=self.course_run_key)
+            assert cert.status == CertificateStatuses.notpassing
+            assert cert.mode == GeneratedCertificate.MODES.verified
+
 
     def test_can_generate_not_enrolled(self):
         """
@@ -450,7 +466,7 @@ class CertificateTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="audit",
+            mode=GeneratedCertificate.MODES.audit,
         )
 
         assert not _can_generate_v2_certificate(u, key)
@@ -467,7 +483,7 @@ class CertificateTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
         cert = GeneratedCertificateFactory(
             user=u,
@@ -511,7 +527,7 @@ class CertificateTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
         GeneratedCertificateFactory(
             user=u,
@@ -533,7 +549,7 @@ class CertificateTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
 
         assert _set_v2_cert_status(u, key) == CertificateStatuses.notpassing
@@ -549,7 +565,7 @@ class CertificateTests(ModuleStoreTestCase):
             user=u,
             course_id=key,
             is_active=True,
-            mode="verified",
+            mode=GeneratedCertificate.MODES.verified,
         )
         GeneratedCertificateFactory(
             user=u,
