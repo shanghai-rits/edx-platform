@@ -1,0 +1,23 @@
+<li class="field-group course-overview-staff-list-item">
+  <div class="field text" id="field-course-overview-staff-h3">
+  	<label for="course-overview-staff-h3"><%= gettext("Staff Name") %></label>
+  	<input type="text" class="short" id="course-overview-staff-h3" data-index=<%- index %> value="<%- h3 %>" />
+  </div>
+  <div class="field text" id="field-course-overview-staff-img">
+  	<label for="course-overview-staff-img"><%= gettext("Photo Link") %></label>
+  	<input type="text" class="long" id="course-overview-staff-img" data-index=<%- index %> value="<%- img %>" />
+  </div>
+   <div class="field text" id="field-course-overview-staff-link">
+  	<label for="course-overview-staff-link"><%= gettext("Link") %></label>
+  	<input type="text" class="long" id="course-overview-staff-link" data-index=<%- index %> value="<%- link %>" />
+  </div>
+  <div class="field text" id="field-course-overview-staff-p">
+  	<label for="course-overview-staff-p"><%= gettext("Description") %></label>
+  	<input type="text" class="long" id="course-overview-staff-p" data-index=<%- index %> value="<%- p %>" />
+  </div>
+  <div class="actions">
+  	<a href="#" class="button delete-button standard remove-item remove-staff" data-index=<%- index %>>
+  	<span class="delete-icon"></span><%= gettext("Delete") %>
+  	</a>
+  </div>
+</li>

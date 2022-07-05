@@ -1,0 +1,15 @@
+<li class="field-group course-overview-faq-list-item">
+  <div class="field text" id="field-course-overview-faq-h3">
+  	<label for="course-overview-faq-h3"><%= gettext("Question") %></label>
+  	<input type="text" class="short" id="course-overview-faq-h3" data-index=<%- index %> value="<%- h3 %>" />
+  </div>
+  <div class="field text" id="field-course-overview-faq-p">
+  	<label for="course-overview-faq-p"><%= gettext("Answer") %></label>
+  	<input type="text" class="long" id="course-overview-faq-p" data-index=<%- index %> value="<%- p %>" />
+  </div>
+  <div class="actions">
+  	<a href="#" class="button delete-button standard remove-item remove-faq" data-index=<%- index %>>
+  	<span class="delete-icon"></span><%= gettext("Delete") %>
+  	</a>
+  </div>
+</li>

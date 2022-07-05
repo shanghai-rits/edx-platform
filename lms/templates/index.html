@@ -1,0 +1,342 @@
+<%page expression_filter="h"/>
+<%inherit file="main.html" />
+<%namespace name='static' file='static_content.html'/>
+<link href="${static.url('nyu_ui/css/homepage.css')}" type="text/css" rel="stylesheet">
+<script src="${static.url('nyu_ui/js/homepage.js')}"></script>
+<script src="${static.url('nyu_ui//lib/lettering.js/0.6.1/jquery.lettering.min.js')}"></script>
+<%!
+from lms.djangoapps.homepage_setting.utils import get_setting_url
+from django.utils.translation import ugettext as _
+from django.urls import reverse
+
+from openedx.core.djangolib.markup import HTML, Text
+from common.djangoapps.facet.models import GroupOfLanguage
+%>
+
+<%
+courses_dict = {}
+for item in courses_facet_list:
+    courses_dict[item.group]=[]
+for course in courses[:settings.HOMEPAGE_COURSE_MAX]:
+    if course.courses_facet:
+        courses_dict[course.courses_facet].append(course)
+%>
+<main id="main" aria-label="Content" tabindex="-1">
+    <section class="home">
+      <div class="banner-wrapper">
+        <div class="img-wrapper">
+            <div class="banner-img" style="background-image: url(${get_setting_url('image')}.webp), url(${get_setting_url('image')}.jpg)">
+                <video loop autoplay muted
+                    playsinline>
+                    <source src="${get_setting_url('video')}.webm" type="video/webm">
+                    <source src="${get_setting_url('video')}.mp4" type="video/mp4">
+                    Sorry, your browser doesn't support embedded videos.
+                </video>
+                <div class="video-filter"></div>
+                <div class="title-wrapper">
+                    <div class="left">
+                        <img alt="site logo" src="${static.url('nyu_ui//images/opencourse_logo.png')}" width="180">
+                    </div>
+                    <div class="right">
+                        <span class="niuke">上纽课</span>
+                        <span class="opencourse">Mini Course</span>
+                        <span class="nyushanghai">x NYU Shanghai</span>
+                    </div>
+                </div>
+                <div class="jump-wrapper">
+                    <a href="#course-main">
+                        <span class="fa fa-angle-down fa-4x jump-angle"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="courses-wrapper" id="course-main">
+
+        <div class="visible-xs course-nav-xs">
+            
+            % if settings.FEATURES.get('ENABLE_COURSE_DISCOVERY'):
+                <div class="course-search">
+                    <form method="get" action="/courses">
+                    <label><span class="sr">${_("Search for a course")}</span>
+                        <input class="search-input" name="search_query" type="text" placeholder="${_("Search for a course")}"></input>
+                    </label>
+                    <button class="search-button" type="submit">
+                        <span class="icon fa fa-search" aria-hidden="true"></span><span class="sr">${_("Search")}</span>
+                    </button>
+                    </form>
+                </div>
+            % endif
+
+            <ul class="accordion course-nav" id="accordion">
+                <li class="">
+                    <div class="link"><i class="fa fa-book">
+                        </i>
+                            <text class="course-pick">${_('ALL SUBJECTS')}</text>
+                        <i class="fa fa-chevron-down"></i>
+                    </div>
+                    <ul class="submenu" style="display: none;">
+                        <li><a class="all-subs" href="javascript:void(0)">${_('ALL SUBJECTS')}</a></li>
+
+                        % for item in courses_facet_list:
+                        <li><a class="${item.group}" href="javascript:void(0)">
+                            ${GroupOfLanguage.get_group(LANGUAGE_CODE, item)}
+                        </a></li>
+                        % endfor
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="hidden-xs course-nav-not-xs">
+            <nav class="course-nav text-center">
+                <ol class="tabs">
+                    % if settings.FEATURES.get('ENABLE_COURSE_DISCOVERY'):
+                        <li class="tab">
+                            <a class="all-subs search-button">
+                            ${_("Search")}
+                            <span class="icon fa fa-search" aria-hidden="true"></span><span class="sr">${_("Search")}</span>
+                            </a>
+                        </li>
+                    % endif
+                    <li class="tab">
+                        <a class="all-subs active">
+                            ${_('ALL SUBJECTS')}
+                        </a>
+                    </li>
+                    % for item in courses_facet_list:
+                    <li class="tab">
+                        <a class="${item.group}">
+                            ${GroupOfLanguage.get_group(LANGUAGE_CODE, item)}
+                        </a>
+                    </li>
+                    % endfor
+                </ol>
+
+            </nav>
+            % if settings.FEATURES.get('ENABLE_COURSE_DISCOVERY'):
+                <div class="course-search">
+                    <form method="get" action="/courses">
+                    <label><span class="sr">${_("Search for a course")}</span>
+                        <input class="search-input" name="search_query" type="text" placeholder="${_("Search for a course")}"></input>
+                    </label>
+                    <button class="search-button" type="submit">
+                        <span class="icon fa fa-search" aria-hidden="true"></span><span class="sr">${_("Search")}</span>
+                    </button>
+                    </form>
+                </div>
+            % endif
+        </div>
+
+        <div class="courses-content">
+            <div class="course-all-subs course-slider ul-active">
+                <div class="slide-wrap">
+                    <div class="border">
+                        <div class="slide">
+                            <div class="shift right shift-active"></div>
+                            <i class="shift right fa fa-angle-right fa-4x shift-active i-active"></i>
+                            <div class="shift left shift-active"></div>
+                            <i class="shift left fa fa-angle-left fa-4x shift-active i-active"></i>
+                            <ul>
+                                <li class="first"></li>
+                                % if settings.FEATURES.get('COURSES_ARE_BROWSABLE'):
+                                % for course in courses[:settings.HOMEPAGE_COURSE_MAX]:
+                                <li>
+                                    <%include file="course_vertical.html" args="course=course" />
+                                </li>
+                                % endfor
+                                % endif
+                                <li class="last"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            % for item in courses_facet_list:
+            <div class="course-${item.group} course-slider" style="display:none">
+                <div class="slide-wrap">
+                    <div class="border">
+                        <div class="slide">
+                            <div class="shift right shift-active"></div>
+                            <i class="shift right fa fa-angle-right fa-4x shift-active i-active"></i>
+                            <div class="shift left shift-active"></div>
+                            <i class="shift left fa fa-angle-left fa-4x shift-active i-active"></i>
+                            <ul>
+                                <li class="first"></li>
+                                % if settings.FEATURES.get('COURSES_ARE_BROWSABLE'):
+                                % for course in courses_dict[item.group]:
+                                <li>
+                                    <%include file="course_vertical.html" args="course=course" />
+                                </li>
+                                % endfor
+                                % endif
+                                <li class="last"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            % endfor
+
+            <div class="visible-xs course-slider-xs">
+                <ul class="course-xs-all-subs ul-xs-active">
+                    % if settings.FEATURES.get('COURSES_ARE_BROWSABLE'):
+                    % for course in courses[:settings.HOMEPAGE_COURSE_MAX]:
+                    <li>
+                        <%include file="course_horizontal.html" args="course=course" />
+                    </li>
+                    % endfor
+                    % endif
+                </ul>
+                % for item in courses_facet_list:
+                <ul class="course-xs-${item.group}" style="display:none">
+                    % if settings.FEATURES.get('COURSES_ARE_BROWSABLE'):
+                    % for course in courses_dict[item.group]:
+                    <li>
+                        <%include file="course_horizontal.html" args="course=course" />
+                    </li>
+                    % endfor
+                    % endif
+                </ul>
+                % endfor
+                <div class="course-search"></div>
+
+                <%!
+                from lms.djangoapps.branding.api import get_footer
+                %>
+                <% footer = get_footer(is_secure=is_secure) %>
+                <div class="wrapper wrapper-footer visible-xs">
+                    <div class="wrapper-about-xs" >
+                        <!-- third screen  -->
+                        <div class="about-content-xs">
+                            <div class="slogan">
+                                ${_('A Liberal Arts Education')} ${_('At Your Fingertips.')}
+                            </div>
+
+                            <div class="way-to" >
+                            <button class="way-login">
+                                <a href="/register">
+                                    </i>${_('Sign Up Now')}
+                                </a>
+                            </button>
+                            </div>
+
+                            <div class="our-qr-code"></div>
+
+                        </div>
+                    </div>
+
+                    <footer class="footer-custom">
+                        <div class="top grid-wrapper">
+                            <div class="col-sm-3">
+                                <div class="text-center"><a href="https://shanghai.nyu.edu/">
+                                    <img alt="organization logo" src="${footer['logo_image']}" width="180">
+                                </a>
+                                    <div class="copyright">${footer['copyright']}</div>
+                                </div>
+                            </div>
+
+                            <div class="center col-sm-6 text-center">
+                                <div class="follow column">
+                                    <div class="title">${_('Follow Us')}</div>
+                                    <div class="content-box">
+                                        % for item_num, link in enumerate(footer['social_links']):
+                                        <span class="social-icon">
+                                            <a href="${link['url']}">
+                                                <img width="48px" src="${static.url(link['icon-class'])}">
+                                            </a>
+                                        </span>
+                                        % endfor
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="text-center">
+                                    % if not hide_openedx_link:
+                                    <a href="${footer['openedx_link']['url']}">
+                                        <img src="${static.url(footer['openedx_link']['image'])}"
+                                             alt="${footer['openedx_link']['title']}"
+                                             width="180"/>
+                                    </a>
+                                    % endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <div class="icp">
+                                <p>
+                                    <a href="http://beian.miit.gov.cn" target="_blank">沪ICP备15010846号-2</a>
+                                    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502017015"><img src="${static.url('nyu_ui//images/ghs.png')}">沪公网安备31011502017015号</a>
+                                </p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="hidden-xs wrapper-about">
+        <!-- third screen -->
+        <!--<div class="third-filter"></div>-->
+
+        <div class="about-centent">
+            <div class="left">
+                <div class="slogan">
+                    <span>${_('A Liberal Arts Education')}</span>
+                    <span>${_('At Your Fingertips.')}</span>
+                </div>
+                <div style="width: 557px"><div class="sub-slogan">${_('Sign Up Now For More Learning Opportunities!')}</div></div>
+                <div class="way-to">
+                    <button class="way-login">
+                        <a href="/register">
+                            <span>${_('Sign Up Now')}</span>
+                        </a>
+                    </button>
+                </div>
+            </div>
+            <div class="right">
+                <div class="our-qr-code"></div>
+            </div>
+        </div>
+    </div>
+    </section>
+</main>
+
+% if show_homepage_promo_video:
+  <section id="video-modal" class="modal home-page-video-modal video-modal">
+    <div class="inner-wrapper">
+      <iframe title="YouTube Video" width="640" height="360" src="//www.youtube.com/embed/${homepage_promo_video_youtube_id}?showinfo=0" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </section>
+% endif
+
+<%block name="js_extra">
+   <script type="text/javascript">
+      $(window).load(function() {
+         if(getParameterByName('next')) {
+              $('#login').trigger("click");
+         }
+      })
+   </script>
+</%block>
+<script type="text/javascript">
+  $(function () {
+      $.each($('.course-slider'),function (index,item) {
+          $(item).slider();
+      });
+  });
+</script>
+
+% if show_signup_immediately is not UNDEFINED:
+  ## NOTE: This won't work in production, because anonymous views are cached, so it will
+  ## show either with or without this extra js for 3 minutes at a time.
+<script type="text/javascript">
+  $(window).load(function() {$('#signup_action').trigger("click");});
+</script>
+% endif
