@@ -1,0 +1,130 @@
+<%! from django.utils.translation import ugettext as _ %>
+<%! from openedx.core.djangoapps.lang_pref.api import released_languages%>
+<%inherit file="base.html" />
+<%def name="online_help_token()"><% return "facet" %></%def>
+<%block name="title">${_("Facet")}</%block>
+<%block name="bodyclass">is-signedin course container view-container</%block>
+<%namespace name='static' file='static_content.html'/>
+<%block name="header_extras">
+<link rel="stylesheet" type="text/css" href="${static.url('cms/css/facet_group.css')}" />
+<script src="${static.url('common/js/vendor/jquery.js')}"></script>
+<script src="${static.url('cms/js/facet/facet_group.js')}"></script>
+</%block>
+<%block name="content">
+<div class="wrapper-mast wrapper">
+    <header class="mast has-actions has-navigation has-subtitle">
+        <div class="page-header">
+            <small class="subtitle">${_("Facet")}</small>
+            <div class="wrapper-xblock-field incontext-editor is-editable" data-field="display_name">
+                <h1 class="page-header-title xblock-field-value incontext-editor-value"><span class="title-value">${displayname}</span></h1>
+            </div>
+        </div>
+
+        <nav class="nav-actions">
+            <ul>
+                </li>
+                <li class="nav-item">
+                    <form action="/facet/${context_facet}" method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${csrf_token}">
+                        <input type="hidden" name="delete_facet" value="${context_facet}">
+                        % if displayname!=settings.HOMEPAGE_SUBJECTS_DEFAULT_FACET_NAME:
+                        <button type="submit" class="button view-button view-live-button" title="${_('Click to delete this whole facet.')}">${_('Delete This Facet')}</button>
+                        % else:
+                        <span class="button view-button" disabled>${_('Delete This Facet')}</span>
+                        % endif
+                    </form>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+</div>
+
+<div class="wrapper-content wrapper">
+    <div class="inner-wrapper">
+        <section class="content-area">
+            <article class="content-primary">
+                <div style="position: relative; left:20px; top:10px">
+                <h2>${_('The following is a list of groups in your facet. Add or delete groups to edit your facet.')}</h2>
+
+                <form class="form-padding" action="/facet/${context_facet}" method="POST">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrf_token}">
+                    <input type="text" name="add_group">
+                    <button class="submit-groupOpt" type="submit">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>${_('Add Group')}
+                    </button>
+                </form>
+
+                % for item in items:
+                <div>
+                    <form class="form-padding" action="/facet/${context_facet}" method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${csrf_token}">
+
+                        <span class="group_display">${item.group}</span>
+                        <input type="hidden" name="delete_group" value="${item.group}">
+                        <button class="submit-groupOpt" type="submit" ><i class="fa fa-trash-o" aria-hidden="true"></i>${_('Delete Group')}</button>
+                    </form>
+                    <input type="hidden" name="group" value="${item.id}">
+                    <ul class="group_items" hidden>
+                        % for group_lang in item.group_langs.all():
+                        <li>
+                            <select class="item_languages" disabled>
+                                <% languages = released_languages() %>
+                                % if len(languages) > 1:
+                                    % for lang in languages:
+                                        % if lang[0]==group_lang.lang:
+                                        <option value="${group_lang.lang}">${lang[1]}</option>
+                                        % endif
+                                    % endfor
+                                % endif
+                            </select>
+                            <input type="text" readonly disabled name="group_item_display" class="group_item_display" value="${group_lang.content}">
+                            <button class="submit-groupOpt delete_group_item">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>${_('Delete Item')}
+                            </button>
+                        </li>
+                        % endfor
+
+                        <li class="hidden_item">
+                            <select class="item_languages">
+                                <% languages = released_languages() %>
+                                % if len(languages) > 1:
+                                    % for lang in languages:
+                                        <option value="${lang[0]}">${lang[1]}</option>
+                                    % endfor
+                                % endif
+                            </select>
+                            <input type="text" name="group_item_add" class="group_item_add">
+                            <button class="submit-groupOpt add_group_item">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i>${_('Save Item')}
+                            </button>
+                            <button class="submit-groupOpt cancel_edit">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>${_('Delete Item')}
+                            </button>
+                        </li>
+                        <li>
+                            <button class="submit-groupOpt add_line">
+                                <i class="fa fa-plus" aria-hidden="true"></i>${_('Add Item')}
+                            </button>
+                        </li>
+
+                    </ul>
+                </div>
+                % endfor
+                </div>
+            </article>
+            <aside class="content-supplementary" role="complementary">
+                <div class="bit">
+                    <h3 class="title-3">${_("Add a group to your facet")}</h3>
+                    <p>${_("To add a group to your facet, click Add Group button.")}</p>
+                    <h3 class="title-3">${_("Delete a group from your facet")}</h3>
+                    <p>${_("To delete a group from your facet, click Delete Group button.")}</p>
+                </div>
+                <div class="bit external-help">
+                    <a href="${get_online_help_info(online_help_token())['doc_url']}" target="_blank" class="button external-help-button">${_("Learn more about facets")}</a>
+                </div>
+            </aside>
+            </section>
+        </div>
+    </div>
+</%block>

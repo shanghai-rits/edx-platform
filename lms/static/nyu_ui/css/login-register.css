@@ -1,0 +1,207 @@
+html, body, body .window-wrap, main, .login-register-content {
+    height: 100%;
+    background-color: white;
+}
+
+.global-header {
+    border-bottom: none;
+    box-shadow: none;
+}
+
+.login-register-form-wrapper {
+    height: 100%;
+    min-height: 750px;
+    display: inline-flex;
+    margin: auto;
+    flex: 1;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.login-register-form-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.login-register-banner-wrapper {
+    flex: 1;
+    border-radius: 15% 0 0 0;
+    margin-left: auto;
+    width: 50vw;
+    height: 100%;
+    min-height: 750px;
+    background-position: top right;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-image: linear-gradient(180deg, rgba(238, 253, 255, 0.41) 0%, rgba(193, 166, 228, 0.5) 38.02%, #4B3A6F 100%), url(http://opencdn.shnyu.edu.cn/ui/login_register_banner-xs.jpg);
+}
+
+.login-register-banner {
+    width: 350px;
+    margin-top: 300px;
+    padding: 75px;
+} 
+
+.login-register-banner h1.text {
+    font-size: 3em;
+    line-height: 1.4em;
+    color: white;
+    font-weight: bold;
+}
+
+#phone_login-anchor {
+    min-width: 350px;
+}
+
+#login-and-registration-container {
+    min-width: 350px;
+    max-width: 350px;
+    position: relative;
+}
+
+h3.section-title {
+    font-size: 1.5em;
+    text-align: center;
+    color: black;
+    padding-bottom: 30px;
+}
+
+.login-register .form-wrapper {
+    padding-top: 50px;
+}
+
+.login-register .form-wrapper .login-providers button.login-provider {
+    background: none;
+}
+
+.login-register .form-wrapper .login-providers button.login-provider div {
+    position: inherit !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 40px !important;
+    padding: 2px;
+    border-radius: 60px;
+    font-size: 2em !important;
+    color: black;
+    background-color: white;
+    box-shadow: 0px 4.800000190734863px 24px 0px #8484841A;
+}
+
+.login-register .form-wrapper .login-providers button.login-provider.active {
+    opacity: 1;
+}
+
+.login-register .form-wrapper .login-providers button.login-provider.active div {
+    color: white;
+    background-color: #6531A7;
+}
+
+.toggle-form {
+    padding-top: 50px;
+    text-align: center;
+    margin: auto;
+}
+
+.toggle-form > *{
+    padding: 5px;
+    line-height: 0.8em;
+    font-size: 0.8em;
+    vertical-align: middle;
+}
+
+.sms_code_wrapper {
+    display: flex;
+}
+
+.text-sms_code .icon.phoneCode {
+    display: inline-block;
+    position: inherit;
+    height: 32px;
+    line-height: 32px;
+    background: #57068c82;
+    pointer-events: none;
+    font-size: 1em;
+    min-width: 140px;
+    margin-left: 10px
+}
+
+.text-sms_code .icon.phoneCode.validPhone {
+    pointer-events: all;
+}
+
+.text-sms_code .icon.phoneCode.inactive {
+    pointer-events: none;
+}
+
+@media (min-width: 576px) {
+    #phone_login-anchor {
+        min-width: 400px;
+    }
+
+    #login-and-registration-container {
+        min-width: 400px;
+        max-width: 400px;
+    }
+
+    .login-register .form-wrapper .login-providers button.login-provider div {
+        padding: 5px;
+    }
+
+}
+
+@media (min-width: 992px) { 
+    .login-register-form-wrapper {
+        max-width: 50vw;
+    }
+    .login-register-banner-wrapper {
+        background-image: linear-gradient(180deg, rgba(238, 253, 255, 0.41) 0%, rgba(193, 166, 228, 0.5) 38.02%, #4B3A6F 100%), url(http://opencdn.shnyu.edu.cn/ui/login_register_banner-xs.jpg);
+    }
+}
+
+@media (min-width: 1200px) { 
+    .login-register-banner-wrapper {
+        background-size: 100%;
+        background-image: linear-gradient(180deg, rgba(238, 253, 255, 0.41) 0%, rgba(193, 166, 228, 0.5) 38.02%, #4B3A6F 100%), url(http://opencdn.shnyu.edu.cn/ui/login_register_banner-md.jpg);
+    }
+
+    .login-register-banner h1.text {
+        width: 400px;
+        font-size: 3.5em;
+    }
+
+    #login-and-registration-container {
+        max-width: 500px;
+    }
+}
+
+
+.login-register , .login-register .action-primary {
+    width: 100%;
+}
+
+.login-register-content {
+    margin-top: 0;
+    background: none;
+}
+
+.form-field input {
+    background: var(--transparent);
+    box-shadow: 0px 4px 20px 0px #8484841A;
+}
+
+/*@media (max-width: 650px){*/
+/*.section-bkg-wrapper{*/
+/*background: none;*/
+/*}*/
+
+/*}*/
+.form-radio {
+    margin-top: 10px;
+}
+
+.form-radio * {
+    font-family: "Roboto", "Open Sans", Verdana, Geneva, sans-serif, sans-serif;
+}

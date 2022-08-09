@@ -1,0 +1,97 @@
+body {
+    line-height: 1em;
+}
+
+.btn-primary {
+    padding: 0.625rem 1.25rem;
+    font-size: 16px;
+    line-height: 1em;
+}
+
+.navbar.course-tabs {
+    box-sizing: border-box;
+    border-bottom: none;
+    margin: 0 auto;
+    padding: 0 2%;
+    display: block;
+}
+
+.navbar.course-tabs .navbar-nav {
+    display: block;
+}
+
+.navbar.course-tabs li.nav-item {
+    color: #313131;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    border-bottom: 4px hidden #57068c;
+    font-size: 14px;
+    line-height: 20.72px;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    transition: all 0.1s linear 0s;
+}
+
+.navbar.course-tabs a.nav-link {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding: 10px 15px 13px 15px;
+}
+
+.navbar.course-tabs li.nav-item.active, .navbar.course-tabs li.nav-item:hover {
+    border-bottom-style: solid;
+    background-color: transparent;
+    color: #57068c;
+    border-bottom-color: #57068c;
+}
+
+.window-wrap {
+    background: #f5f5f5;
+}
+
+.forum-nav-browse-menu {
+    position: relative;
+}
+
+.wrapper-preview-menu {
+    padding: 0 2%;
+}
+
+.wrapper-preview-menu .preview-menu {
+    padding: 15px 2%;
+}
+
+.page-content-container {
+    box-sizing: border-box;
+    vertical-align: top;
+    width: 100%;
+}
+
+.page-content-container .page-header {
+    padding: 2em 2.5em;
+}
+
+.page-content-container .page-content {
+    padding: 2em 2.5em;
+}
+
+.header-logo a {
+    font-size: 32px;
+    line-height: 1.4em;
+}
+
+.wrapper-footer {
+    margin-top: 40px;
+    padding-right: 2%;
+    padding-left: 2%;
+}
+
+.wrapper-footer footer.footer-custom {
+    max-width: 1180px;
+}
+
+.wrapper-footer footer.footer-custom .copyright {
+    margin-top: 20px;
+    font-size: small;
+    margin-bottom: 30px;
+}
