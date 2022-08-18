@@ -1,0 +1,74 @@
+.submit-groupOpt{
+    background: none;
+    color: #0075b4;
+    border: 1px solid #0075b4;
+    padding: 5px;
+    vertical-align: middle;
+    border-radius: 4px; 
+    margin-left: 1em;
+    cursor: pointer;
+}
+.submit-groupOpt:hover{
+    color: #fff;
+    background: #0075b4;
+}
+.submit-groupOpt i{
+    padding: 0 8px;
+}
+
+.form-padding{
+    padding:10px;
+}
+
+.form-padding input[name='add_group']{
+    width: 52%;
+}
+
+.form-padding span{
+    display: -webkit-inline-box;
+    width: 50%;
+    border-left: 2px solid #0075b4;
+    padding-left: 0.5em;
+    height: 34px;
+    line-height: 34px;
+    cursor: pointer;
+    background: linear-gradient(to left, #0075b469, #f3f3f3, #ffffff);
+}
+.form-padding span:hover{
+    background: linear-gradient(to left, #0075b48f, #b1afaf, #ffffff);
+}
+
+.group_items{
+    padding: 0 2em;
+}
+
+.group_items li {
+    padding: 10px 0;
+    height: 40px;
+}
+.group_items .hidden_item{
+    display: none;
+}
+
+.group_item_display{
+    background: #8080801c;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 1em !important;
+}
+.group_item_add{
+    font-size: 1em;
+}
+.add_line{
+    padding-left: 0;
+}
+
+.div-groups{
+    padding: 2em;
+}
+
+.item_languages{
+    height: 36px;
+    vertical-align: bottom;
+    min-width: 90px;
+}
