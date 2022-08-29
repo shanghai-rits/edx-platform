@@ -1,0 +1,9 @@
+$primary: rgb(87, 6, 140); 
+
+$secondary: rgb(33, 33, 33);
+
+// Default bootstrap theming
+
+@import 'edx-bootstrap/sass/open-edx/theme';
+
+@import './variables-v1';

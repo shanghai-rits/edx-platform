@@ -1,0 +1,12 @@
+div.container {
+    overflow-x: scroll;
+    position: relative;
+}
+
+div.container .wiki-wrapper {
+    min-width: 500px;
+}
+
+.wrapper-course-material .course-material {
+    position: relative;
+}
