@@ -1,0 +1,167 @@
+## mako
+<%page expression_filter="h"/>
+<%!
+  from django.urls import reverse
+  from django.utils.translation import ugettext as _
+  from lms.djangoapps.branding.api import get_footer
+  from openedx.core.djangoapps.lang_pref.api import footer_language_selector_is_enabled
+%>
+<% footer = get_footer(is_secure=is_secure) %>
+<% icp_license_info = getattr(settings, 'ICP_LICENSE_INFO', {})%>
+<%namespace name='static' file='static_content.html'/>
+
+
+  <div class="wrapper wrapper-footer homepage-hidden-xs no-border no-shadow">
+      <footer class="footer-custom">
+          <div class="top grid-wrapper">
+              <div class="col-sm-3">
+                  <div class="text-center visible-xs"><a href="//shanghai.nyu.edu/">
+                      <img alt="organization logo" src="${footer['logo_image']}" width="180">
+                  </a>
+                      <div class="copyright">${footer['copyright']}</div>
+                  </div>
+  
+                  <div class="text-left hidden-xs"><a href="//shanghai.nyu.edu/">
+                      <img alt="organization logo" src="${footer['logo_image']}" width="180">
+                  </a>
+                      <div class="copyright">${footer['copyright']}</div>
+                  </div>
+  
+              </div>
+  
+              <div class="center col-sm-6 text-center">
+                  <div class="follow column">
+                      <div class="title">${_('Follow Us')}</div>
+                      <div class="content-box">
+                          % for item_num, link in enumerate(footer['social_links']):
+                          <span class="social-icon">
+                              <a href="${link['url']}">
+                                  <img width="48px" src="${static.url(link['icon-class'])}">
+                              </a>
+                          </span>
+                          % endfor
+                      </div>
+  
+                  </div>
+              </div>
+  
+              <div class="col-sm-3">
+                  <div class="text-right hidden-xs">
+                      % if not hide_openedx_link:
+                      <a href="${footer['openedx_link']['url']}">
+                          <img src="${static.url(footer['openedx_link']['image'])}"
+                               alt="${footer['openedx_link']['title']}"
+                               width="180"/>
+                      </a>
+                      % endif
+                  </div>
+  
+                  <div class="text-center visible-xs">
+                      % if not hide_openedx_link:
+                      <a href="${footer['openedx_link']['url']}">
+                          <img src="${static.url(footer['openedx_link']['image'])}"
+                               alt="${footer['openedx_link']['title']}"
+                               width="180"/>
+                      </a>
+                      % endif
+                  </div>
+  
+              </div>
+          </div>
+          <div class="bottom">
+              <div class="icp">
+                <p>
+                  <a href="http://beian.miit.gov.cn" target="_blank">沪ICP备15010846号-2</a>
+                  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502017015"><img src="${static.url('nyu_ui//images/ghs.png')}">沪公网安备31011502017015号</a>
+                </p>
+              </div>
+          </div>
+      </footer>
+    <!-- <footer id="footer-openedx" class="grid-container"
+      ## When rendering the footer through the branding API,
+      ## the direction may not be set on the parent element,
+      ## so we set it here.
+      % if bidi:
+        dir=${bidi}
+      % endif
+    >
+      <div class="colophon">
+        <nav class="nav-colophon" aria-label="${_('About')}">
+          <ol>
+              % for item_num, link in enumerate(footer['navigation_links'], start=1):
+              <li class="nav-colophon-0${item_num}">
+                <a id="${link['name']}" href="${link['url']}">${link['title']}</a>
+              </li>
+              % endfor
+          </ol>
+        </nav>
+
+        % if context.get('include_language_selector', footer_language_selector_is_enabled()):
+            <%include file="${static.get_template_path('widgets/footer-language-selector.html')}"/>
+        % endif
+
+        <div class="wrapper-logo">
+          <p>
+            <a href="/">
+              ## The default logo is a placeholder.
+              ## You can either replace this link entirely or update
+              ## the FOOTER_ORGANIZATION_IMAGE in Django settings.
+              ## If you customize FOOTER_ORGANIZATION_IMAGE, then the image
+              ## can be included in the footer on other sites
+              ## (e.g. a blog or marketing front-end) to provide a consistent
+              ## user experience.  See the branding app for details.
+              <img alt="${_('organization logo')}" src="${footer['logo_image']}">
+            </a>
+          </p>
+        </div>
+
+        ## Site operators: Please do not remove this paragraph! This attributes back to edX and makes your acknowledgement of edX's trademarks clear.
+          <p class="copyright">${footer['copyright']}
+              % if icp_license_info.get('icp_license'):
+                ${u" | {text}".format(text=icp_license_info.get('text'))}
+                <a href="${icp_license_info.get('icp_license_link', '#')}">
+                    ${u" {icp}".format(icp=icp_license_info.get('icp_license'))}
+                </a>
+              % endif
+          </p>
+
+        <nav class="nav-legal" aria-label="${_('Legal')}">
+          <ul>
+            % for item_num, link in enumerate(footer['legal_links'], start=1):
+              <li class="nav-legal-0${item_num}">
+                <a href="${link['url']}">${link['title']}</a>
+              </li>
+            % endfor
+            <li><a href="${footer['edx_org_link']['url']}">${footer['edx_org_link']['text']}</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      ## Please leave this link and use one of the logos provided
+      ## The OpenEdX link may be hidden when this view is served
+      ## through an API to partner sites (such as marketing sites or blogs),
+      ## which are not technically powered by OpenEdX.
+      % if not hide_openedx_link:
+      <div class="footer-about-openedx">
+        <p>
+          <a href="${footer['openedx_link']['url']}">
+            <img src="${footer['openedx_link']['image']}" alt="${footer['openedx_link']['title']}" width="175" />
+          </a>
+        </p>
+      </div>
+      % endif
+    </footer> -->
+  </div>
+% if include_dependencies:
+  <%static:js group='base_vendor'/>
+  <%static:css group='style-vendor'/>
+  <%include file="widgets/segment-io.html" />
+<%include file="widgets/rudderstack.html" />
+  <%include file="widgets/segment-io-footer.html" />
+<%include file="widgets/rudderstack-footer.html" />
+% endif
+% if footer_css_urls:
+  % for url in footer_css_urls:
+    <link rel="stylesheet" type="text/css" href="${url}"></link>
+  % endfor
+% endif

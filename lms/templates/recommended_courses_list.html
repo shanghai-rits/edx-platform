@@ -1,0 +1,41 @@
+<%page expression_filter="h"/>
+<%namespace name='static' file='static_content.html'/>
+<%! from django.utils.translation import ugettext as _ %>
+
+<section class="courses-container">
+        <section class="courses">
+            <div style="text-align: center;">
+                <h4> ${_("Recommended Courses")} </h4>
+                <a href="${marketing_link('COURSES')}" style="font-size:12pt; position: absolute; right: 0px;"> ${_("More >>> ")} </a>
+            </div>
+            <br>
+            <ul class="courses-listing">
+            %for course in recommendations[:4]:
+                <li class="courses-listing-item">
+                  <%include file="course.html" args="course=course" />
+                </li>
+            %endfor
+            </ul>
+        </section>
+
+        <section class="courses">
+            <div style="text-align: center;">
+                <h4> ${_("Popular Courses")} </h4>
+                <a href="${marketing_link('COURSES')}" style="font-size:12pt; position: absolute; right: 0px;"> ${_("More >>> ")} </a>
+            </div>
+            <br>
+            <ul class="courses-listing">
+            %for course in courses[:8]:
+              <li class="courses-listing-item">
+                <%include file="course.html" args="course=course" />
+              </li>
+            %endfor
+            </ul>
+        </section>
+        ## in case there are courses that are not shown on the homepage, a 'View all Courses' link should appear
+        % if settings.HOMEPAGE_COURSE_MAX and len(courses) > settings.HOMEPAGE_COURSE_MAX:
+          <div class="courses-more">
+            <a class="courses-more-cta" href="${marketing_link('COURSES')}" > ${_("View all Courses")} </a>
+          </div>
+        % endif
+</section>

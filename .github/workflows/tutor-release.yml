@@ -1,0 +1,119 @@
+name: Tutor Release Create Command
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Create the branch with the security patches removed
+  create-branch:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Runs a single command using the runners shell
+      - name: Get the latest release from the Tutor Repo
+        uses: oprypin/find-latest-tag@v1
+        with: 
+          repository: overhangio/tutor
+          releases-only: true 
+        id: get-latest-tag
+      
+      - run: echo 'Tutor is at version ${{ steps.get-latest-tag.outputs.tag }}'
+
+      # Get the security patches in a list
+      # Get the tutor branch 
+      - name: Get the tutor branch
+        uses: actions/checkout@v2
+        with:
+          repository: overhangio/tutor
+          ref: ${{ steps.get-latest-tag.outputs.tag }}
+          path: ./Tutor
+      
+      # Get the Dockerfile with the patches
+      - name: Get the build image Dockerfile
+        uses: juliangruber/read-file-action@v1
+        id: dockerfile
+        with:
+          path: ./Tutor/tutor/templates/build/openedx/Dockerfile
+      
+      # Run regex on the Dockerfile to get the hashes
+      - name: Run regex on the Dockerfile
+        uses: actions/github-script@v5
+        id: regex-match
+        env: 
+          DOCKERFILE: ${{ steps.dockerfile.outputs.content }}
+        with:
+          script: |
+            const data = process.env.DOCKERFILE;
+            let regex = new RegExp('git cherry-pick ([^\n <]+)', 'gm');
+            const matches = data.matchAll(regex);
+            let matches_list = [];
+            for (const match of matches) {
+                matches_list.push(match[1]);
+            }
+            return matches_list
+      
+      - run: echo "The following patches will be removed - ${{ env.TEST }}"
+        env: 
+          TEST: ${{ steps.regex-match.outputs.result }}
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          path: ./Edx
+      
+
+      # - name: Remove the patches 
+        
+      #   run: |
+      #     pwd
+      #     git log
+      #     jq -r '.[]' <<< '${{ steps.regex-match.outputs.result }}' | while read commit; do
+      #       git revert $commit -X theirs;
+      #     done
+        
+      - name: Remove the first v from the tag
+        uses: actions/github-script@v5
+        id: new-tag
+        env:
+          TAG: ${{ steps.get-latest-tag.outputs.tag }}
+        with:
+          result-encoding: string
+          script: |
+            const tag = process.env.TAG;
+            let new_tag = tag.slice(1,);
+            return new_tag
+
+      # Create the command file
+      - name: Create the script
+        uses: "finnp/create-file-action@master"
+        env:
+          FILE_NAME: "./Edx/tutor-release.sh"
+          FILE_DATA: |
+            git checkout -b ${{ steps.new-tag.outputs.result }} || git checkout ${{ steps.new-tag.outputs.result }};
+            jq -r '.[]' <<< '${{ steps.regex-match.outputs.result }}' | while read commit; do
+              git revert $commit -X theirs;
+            done;
+            git push -u origin ${{ steps.new-tag.outputs.result }};
+      
+      - name: Commit changes
+        working-directory: ./Edx
+        run: |
+          git config --global user.email "uet200@nyu.edu"
+          git config --global user.name "Utku Ege Tuluk"
+          git add .
+          git commit -m "Update tutor file" || echo "NO_CHANGES=true" >> $GITHUB_ENV
+
+      - name: Push to branch
+        if: ${{ env.NO_CHANGES != 'true' }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          directory: ./Edx

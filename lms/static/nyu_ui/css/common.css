@@ -1,0 +1,347 @@
+@import "grid.css";
+
+:root {
+    --charcoal-grey: rgba(108, 108, 108, 1);
+    --light-grey: rgba(224, 224, 224, 0.5);
+    --grey-white: rgba(242, 242, 242, 1);
+    --pure-white: rgba(255, 255, 255, 1);
+    --transparent: rgba(0, 0, 0, 0);
+
+    --banner-title-font: var(--pure-white);
+    --homepage-course-wrapper-background-color: var(--light-grey);
+    --homepage-dropdown-menu-background-color: var(--pure-white);
+    --homepage-dropdown-menu-font-color: var(--font-secondary-light-color);
+    --homepage-dropdown-menu-action-color: var(--charcoal-grey);
+    --homepage-dropdown-button: var(--pure-white);
+    --homepage-i18n-font-color: var(--pure-white);
+    --i18n-font-color: var(--secondary-color);
+    --course-nav-background-color: var(--grey-white);
+    --course-nav-font-color: var(--font-secondary-light-color);
+    --course-nav-action-color: var(--charcoal-grey);
+    --course-background-color: var(--pure-white);
+    --course-learn-more-background-color: var(--pure-white);
+    --course-learn-more-font-color: var(--primary-color);
+    --course-line-color: var(--pure-white);
+    --course-item-background-color: var(--primary-color);
+    --course-title-font-color: var(--pure-white);
+    --footer-font-color: var(--charcoal-grey);
+
+    --roboto-font-family: "Roboto", "Open Sans", Verdana, Geneva, sans-serif, sans-serif !important;
+
+    /*legacy color*/
+    --primary-color: rgb(33, 33, 33);
+    --primary-dark-color: rgb(0, 0, 0);
+    --primary-light-color: rgb(72, 72, 72);
+    --primary-transparent-color: rgba(33, 33, 33, 0.65);
+    --secondary-color: rgb(87, 6, 140);
+    --secondary-dark-color: rgb(36, 0, 94);
+    --secondary-light-color: rgb(137, 62, 189);
+    --font-light-color: rgb(255, 255, 255);
+    --font-color: rgba(224, 224, 224, 0.5);
+    --font-dark-color: rgb(0, 0, 0);
+    --font-secondary-light-color: rgb(158, 158, 158);
+    --menu-transparent: rgba(255, 255, 255, 0.56);
+}
+
+.mobile-menu {
+    margin: 35px 0 -10px;
+}
+
+.hamburger-menu {
+    margin-top: 5px;
+}
+
+img.user-image-frame {
+    margin-top: -15px !important;
+}
+
+@media (min-width: 992px) {
+	.global-header .toggle-user-dropdown {
+		display: none !important;
+	}
+
+    .menu-button {
+		display: none;
+	}
+
+	.global-header .dropdown-user-menu {
+        background-color: transparent !important;
+		border: unset !important;
+		position: unset !important;
+        display: flex !important;
+        width: auto !important;
+        visibility: visible !important;
+	}
+
+	.global-header .dropdown-user-menu > div {
+		border-bottom: unset !important;
+        border-radius: 3px !important;
+        width: unset;
+	}
+
+	.global-header .dropdown-user-menu a {
+        color: #57068c !important;
+	}
+
+	.global-header .dropdown-user-menu a:hover {
+        color: var(--homepage-i18n-font-color) !important;
+        background: #57068c;
+	}
+
+	.global-header button.btn-i18n:hover {
+		color: var(--homepage-i18n-font-color) !important;
+        background: #57068c !important;
+	}
+
+    .global-header .sign-in-btn {
+        color: #57068c !important; 
+        font-size: 1rem;
+        padding: 10px 20px !important;
+        margin-top: -10px;
+        border-radius: 3px !important;
+        text-decoration: none !important;
+        border: unset !important;
+        background-color: transparent !important;
+        display: inline-block;
+        font-weight: bold;
+        font: normal 1.2rem/1.6rem "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        letter-spacing: 1px;
+        -webkit-font-smoothing: antialiased;
+        transition: all 0.1s linear 0s;
+    }
+    .global-header .sign-in-btn:hover {
+        color: #fff !important;
+        background: #57068c !important;
+    }
+}
+
+@media (max-width: 992px) {  
+    .global-header .header-logo {
+        justify-content: center;
+        display: flex;
+        width: 100%;
+        position: absolute;
+    }
+    .global-header .header-logo a {
+        margin-left: 0;
+        float: unset;
+    }
+    .course-wrapper {
+        border-left: none;
+        border-right: none;
+    }
+
+}
+
+.no-bg {
+    background: var(--transparent) !important;
+}
+
+.btn-no-border {
+    border: none !important;
+}
+
+.avatar-position {
+    margin: 0px -2px 0 21px !important;
+}
+
+.menu-position {
+    margin-top: 4px !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.font-size-18px {
+    font-size: 18px !important;
+    margin-top: 4px;
+}
+
+.logo-size {
+    height: 44px;
+}
+
+.fr {
+    float: left !important;
+}
+
+.btn-i18n {
+    text-transform: unset;
+    letter-spacing: 1px !important;
+    text-shadow: none;
+    font-size: 1rem !important;
+    color: var(--i18n-font-color);
+    padding: 10px 20px;
+    transition: all 0.1s linear 0s;
+    font-weight: 400 !important;
+    box-shadow: unset;
+    margin-top: 0px !important;
+}
+
+.wrapper-header ol:not(.user) a:hover, .wrapper-header ol:not(.user) a:focus {
+    text-decoration: none;
+}
+
+.wrapper-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.grid-wrapper > div {
+    margin-bottom: 45px;
+}
+
+
+/* .footer-custom * {
+    color: var(--footer-font-color);
+} */
+
+.footer-custom .icp p {
+    text-align: center;
+}
+
+.footer-custom > div {
+    margin: 43px 5px 5px 5px;
+}
+
+.copyright {
+    margin-top: 20px;
+    font-size: small;
+    margin-bottom: 30px;
+}
+
+.content-box {
+    margin-top: 13px;
+}
+
+.content-box > span {
+    margin: 3px 10px;
+}
+
+.footer-custom {
+    display: flex;
+    max-width: 1180px;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.footer-custom .top .left {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.footer-custom .top .right {
+    text-align: right;
+}
+
+.footer-custom .top .center {
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 1;
+}
+
+.footer-custom .top .center .column .content-box {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+}
+
+.footer-custom .bottom {
+    display: flex;
+    justify-content: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.nav-courseware {
+    margin-top: 13px;
+    font-size: 18px;
+}
+
+.navbar.course-tabs {
+    overflow-x: hidden;
+}
+
+@media (max-width: 991.98px) {
+    .navbar.course-tabs {
+        overflow-x: scroll;
+        white-space: nowrap;
+    }
+}
+
+.menu-title .user-image-frame {
+    border-radius: 50%;
+}
+
+.language {
+    margin: 15px 40px 0 0;
+    float: right;
+}
+
+@media (max-width: 992px) { 
+    .language {
+        position: inherit;
+        top: 0;
+        right: 0;
+        z-index: 1;
+    }
+}
+
+
+.global-header .nav-links .secondary {
+    margin: 15px 0 0 0;
+}
+
+.language .settings-language-form {
+    float: unset !important;
+    padding: 0 !important;
+}
+
+
+
+.small-search-btn {
+    font-size: 23px !important;
+    margin-top: 5px !important;
+}
+
+.register-and-signin {
+    color: var(--font-light-color);
+}
+
+.discussion .action-button.action-follow.is-checked .action-icon {
+    color: white;
+}
+
+.discussion .action-button.action-follow:hover > .action-icon {
+    color: white !important;
+}
+
+.container>div {
+    border-right: none;
+    border-left: none;
+}
+
+@media (min-width: 992px) {   
+
+    .global-header .nav-links .main .nav-item {
+        padding-top: 5px;
+    }
+
+    /* Logged in Explore courses is inside nav-tab, logged out is inside nav-item with no class*/
+    .global-header .nav-links .main .nav-item a {
+        padding: 10px 15px;
+        border-radius: 3px !important;
+        color: #57068c !important;
+    }
+    
+    /* hover */
+    .global-header .nav-links .main .nav-item a:hover {
+        border-bottom: none;
+        color: var(--homepage-i18n-font-color) !important;
+        background: #57068c !important;
+	}    
+}
