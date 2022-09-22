@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/courses</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/login?next=%2F</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/courses/course-v1:NYUShanghai+CS001+2022_Spring/about</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/courses/course-v1:NYUShanghai+CS002+2022_Spring/about</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/courses/course-v1:NYUShanghai+ECON001+2022_Spring/about</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/courses/course-v1:NYUShanghai+HIST001+2022_Spring/about</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/courses/course-v1:NYUShanghai+IMA001+2022_Spring/about</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/courses/course-v1:NYUShanghai+SS001+2022_Spring/about</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/register</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/login?next=%2Fcourses</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/login?next=%2Fcourses%2Fcourse-v1%3ANYUShanghai%2BCS001%2B2022_Spring%2Fabout</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/login?next=%2Fcourses%2Fcourse-v1%3ANYUShanghai%2BCS002%2B2022_Spring%2Fabout</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/login?next=%2Fcourses%2Fcourse-v1%3ANYUShanghai%2BECON001%2B2022_Spring%2Fabout</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/login?next=%2Fcourses%2Fcourse-v1%3ANYUShanghai%2BHIST001%2B2022_Spring%2Fabout</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/login?next=%2Fcourses%2Fcourse-v1%3ANYUShanghai%2BIMA001%2B2022_Spring%2Fabout</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://minicourse.shanghai.nyu.edu/login?next=%2Fcourses%2Fcourse-v1%3ANYUShanghai%2BSS001%2B2022_Spring%2Fabout</loc>
+  <lastmod>2022-07-20T05:56:44+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>

@@ -1,0 +1,16 @@
+<div class="u-field-value field <%- linkClass %>">
+    <div title="<%- title%>" class="u-field-icon" >
+        <a class="">
+            <i class="fa fa-<%= id.replace("auth-oa2-",'')%>"></i>
+        </a>
+    </div>
+    <a class="u-field-link" id="u-field-link-<%- id %>" href="<%- linkHref %>" aria-describedby="u-field-message-help-<%- id %>">
+        <span class="sr"><%- screenReaderTitle %></span>
+        <span class="u-field-link-title-<%- id %>" aria-hidden="true"><%- linkTitle %></span>
+    </a>
+</div>
+
+<span class="u-field-message" id="u-field-message-<%- id %>">
+    <span class="u-field-message-notification" aria-live="polite"></span>
+    <span class="u-field-message-help" id="u-field-message-help-<%- id %>"><%- message %></span>
+</span>
