@@ -1,0 +1,1 @@
+git checkout -b 12.2.0 || git checkout 12.2.0; jq -r '.[]' <<< '["d61dcac29d1651956623c150be53a8bbe69e9346","01216d9e0637a2260b4c264bda2f22c1e34b38de","a057853a85560759d1d922b00db110207252c6a2","6b0e9f50e9425d17cd62d1b3e9d1cab220e3fe7f"]' | while read commit; do git revert $commit -X theirs; done; git push -u origin 12.2.0;
