@@ -1,0 +1,36 @@
+<%page expression_filter="h"/>
+<%! from openedx.core.djangolib.js_utils import js_escaped_string %>
+
+% if context_course:
+<%
+    locator = context_course.id
+%>
+% endif
+
+% if settings.RUDDERSTACK_KEY:
+<!-- begin Rudderstack -->
+<script type="text/javascript">
+  // if inside course, inject the course location into the JS namespace
+  %if context_course:
+      var course_location_analytics = "${ locator | n, js_escaped_string }";
+  %endif
+
+  // Asynchronously load Rudderstack's analytics.js library
+  !function(){var e=window.rudderanalytics=window.rudderanalytics||[];e.methods=["load","page","track","identify","alias","group","ready","reset","getAnonymousId","setAnonymousId"],e.factory=function(t){return function(){var r=Array.prototype.slice.call(arguments);return r.unshift(t),e.push(r),e}};for(var t=0;t<e.methods.length;t++){var r=e.methods[t];e[r]=e.factory(r)}e.loadJS=function(e,t){var r=document.createElement("script");r.type="text/javascript",r.async=!0,r.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.rudderlabs.com/v1.1/rudder-analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(r,a)},e.loadJS(),
+  e.load("${ settings.RUDDERSTACK_KEY | n, js_escaped_string }","${ settings.DATA_PLANE_URL | n, js_escaped_string }"),
+  e.page()}();
+  // Note: user tracking moved to rudderstack-footer.html
+</script>
+<!-- end Rudderstack -->
+% else:
+<!-- dummy Rudderstack -->
+<script type="text/javascript">
+  %if context_course:
+  var course_location_analytics = "${ locator | n, js_escaped_string }";
+  %endif
+  var rudderanalytics = {
+    "track": function() {}
+  };
+</script>
+<!-- end dummy Rudderstack -->
+% endif
