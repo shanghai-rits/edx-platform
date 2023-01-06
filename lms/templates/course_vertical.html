@@ -1,0 +1,32 @@
+<%def name="online_help_token()"><% return "course" %></%def>
+<%namespace name='static' file='static_content.html'/>
+<%!
+from django.utils.translation import ugettext as _
+from django.urls import reverse
+from openedx.core.djangoapps.content.course_overviews.models import CourseOverviewExpansion
+%>
+<%page args="course" expression_filter="h"/>
+<div class="grid" id="${course.id}" role="region" aria-label="${course.display_name_with_default}">
+    <figure class="effect-julia">
+        <img src="${CourseOverviewExpansion.get_vertical_cover_path(course.id)}"
+             alt="${course.display_name_with_default} ${course.display_number_with_default}"/>
+        <figcaption>
+            <h2 aria-hidden="true">
+                <span class="line"></span>
+                % if LANGUAGE_CODE=='en':
+                <span class="text">
+                    ${CourseOverviewExpansion.get_eng_display_name(course.id)}
+                </span>
+                % else:
+                <span class="text">
+                    ${CourseOverviewExpansion.get_chinese_display_name(course.id)}
+                </span>
+                % endif
+            </h2>
+            <div aria-hidden="true">
+                <p>${_('Learn More')}</p>
+            </div>
+            <a href="${reverse('about_course', args=[course.id])}"></a>
+        </figcaption>
+    </figure>
+</div>
