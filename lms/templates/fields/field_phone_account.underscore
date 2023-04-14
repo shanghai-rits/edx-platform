@@ -1,0 +1,44 @@
+<div class="u-field-phone" hidden >
+   <div class="basic_view">
+				
+        <div class="edit_item">
+            <div class="item_label item_label_mobile"><%= gettext("Phone") %>:</div>
+            <div class="item_value basic_default">
+                <input type="text" placeholder="<%= gettext("Please bind phone number.") %>" readonly="" value="">
+                <button class="update_btn bind_phone" data-click="onClick"><%= gettext("Change") %></button>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="edit_view" hidden>
+        <div class="edit_item">
+            <form onsubmit="return false;" autocomplete="off">
+                <div class="form-item">
+                    <div class="item_label"><%= gettext("Phone") %>:</div>
+                    <div class="item_value">
+                        <input style="display: none;">
+                        <input type="text" class="change-phone" name="phone">
+                    </div>
+                </div>
+                <div class="form-item">
+                    <div class="item_label"><%= gettext("SMS Code") %>:</div>
+                    <div class="item_value">
+                        <input style="display: none;">
+                        <input class="verify_input"  type="text" name="sms_code" maxlength="6">
+                        <button class="verify_btn inactive" disabled="true"><%= gettext("Get SMS Code") %></button><span class="verify_hint"></span>
+                    </div>
+                </div>
+                <div class="item_hint"></div>
+                <div class="form-item item_btns">
+                    <button class="confirm_btn save_phone" data-click="onClick" disabled="true"><%= gettext("Confirm") %></button>
+                    <button class="cancel_btn"><%= gettext("Cancel") %></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<span class="u-field-phone-message">
+    <span class="u-field-message-phone-notification" aria-live="polite"></span>
+</span>

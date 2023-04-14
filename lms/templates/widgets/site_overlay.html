@@ -1,0 +1,53 @@
+<%page expression_filter="h"/>
+<%! from django.utils.translation import ugettext as _ %>
+<%namespace name='static' file='../static_content.html'/>
+
+<% site_overlay_html = static.get_value('site_overlay_html', '') %>
+% if site_overlay_html:
+    <style>
+        .site-overlay-container {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1em;
+            background: white;
+            box-sizing: border-box;
+            display: none;
+        }
+
+        .site-overlay-container .site-overlay-content {
+            flex: 3;
+            display: inline-flex;
+            justify-content: center;
+            align-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .site-overlay-container .site-overlay-button {
+            flex: 1;
+        }
+
+    </style>
+
+    <div id="site-overlay-container" class="site-overlay-container">
+        <div class="site-overlay-content">
+            ${site_overlay_html | n, decode.utf8}
+        </div>
+        <button id="site-overlay-dismiss" class="site-overlay-button button">
+            ${_('Got it')}
+        </button>
+    </div>    
+
+    <script type="text/javascript">
+        if (!document.cookie.split('; ').find((row) => row.startsWith('dismiss_overlay'))) {
+            document.getElementById('site-overlay-container').style.display = "flex";
+            document.getElementById('site-overlay-dismiss').addEventListener('click', function(){
+                document.getElementById('site-overlay-container').style.display = "none";
+            });
+            document.cookie = "dismiss_overlay=true; max-age=86400; path=/;";
+        }
+    </script>
+% endif

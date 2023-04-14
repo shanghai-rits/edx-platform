@@ -1,0 +1,15 @@
+/* Changes to the file at lms/static/sass/course/_profile.scss */
+
+.grade-detail-wrapper {
+    overflow-x: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.grade-detail-wrapper::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.grade-detail-graph {
+    min-width: 450px;
+    width: 100%;
+}

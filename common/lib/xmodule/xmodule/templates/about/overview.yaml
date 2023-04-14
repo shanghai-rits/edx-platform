@@ -1,0 +1,45 @@
+---
+metadata:
+    display_name: overview
+
+data: |
+    <section class="about">
+      <h2>课程概述 / About This Course</h2>
+      <hr>
+      <p>Include your long course description here. The long course description should contain 150-400 words.</p>
+
+      <p>This is paragraph 2 of the long course description. Add more paragraphs as needed. Make sure to enclose them in paragraph tags.</p>
+    </section>
+
+    <section class="prerequisites">
+      <h2>先修要求 / Requirements</h2>
+      <hr>
+      <p>Add information about the skills and knowledge students need to take this course.</p>
+    </section>
+
+    <section class="course-staff">
+      <h2>教师 / Faculty</h2>
+      <hr>
+      <article class="teacher">
+        <div class="teacher-image">
+          <img src="/static/images/placeholder-faculty.png" align="left" style="margin:0 20 px 0" alt="Course Staff Image #1">
+        </div>
+
+        <h3><a href="#" target="_blank">Staff Member #1</a></h3>
+        <p>Biography of instructor/staff member #1</p>
+      </article>
+    </section>
+
+    <section class="faq">
+      <section class="responses">
+        <h2>常见问题 / Frequently Asked Questions</h2>
+        <hr>
+        <article class="response">
+          <h3>我应该使用什么浏览器来学习课程?<br>What web browser should I use?</h3>
+          <p> 
+            最好使用当前各版本的Chrome(谷歌浏览器)、FireFox(火狐浏览器)或者Safari。<br>
+            The Open edX platform works best with current versions of Chrome, Firefox or Safari.
+          </p>
+        </article>
+      </section>
+    </section>

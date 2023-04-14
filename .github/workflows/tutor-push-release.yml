@@ -1,0 +1,52 @@
+name: Makes Releases Public
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  release:
+    types:
+      - "published"
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Download a shallow copy of release commit
+      - name: Download shallow copy
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Remove History
+        env:
+          message: ${{ github.ref }}
+        run: |
+          rm -r .git
+          git init
+          git config --local user.email "36725861+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "Release $message"
+
+      - name: Publish to Public Repo
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PUBLIC_REPO_TOKEN }}
+          branch: ${{ github.ref }}
+          repository: "shanghai-rits/edx-platform"
+          tags: true
+  
+      - name: Create a release
+        uses: ncipollo/release-action@v1
+        with:
+          body: ${{ github.event.release.body }}
+          owner: "shanghai-rits"
+          repo: "edx-platform"
+          token: ${{ secrets.PUBLIC_REPO_TOKEN }}
+          name: ${{ github.event.release.name }}
+          tag: ${{ github.event.release.tag_name }}
+
+
