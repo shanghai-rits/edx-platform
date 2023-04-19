@@ -1,0 +1,25 @@
+name: Tutor Build All the Branches
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches:
+      - '!master'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Create a release for the branch
+  release-image:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  # Create the branch with the security patches removed
+  build-image:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test

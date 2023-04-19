@@ -1,0 +1,674 @@
+<%page expression_filter="h"/>
+<%! from openedx.core.djangolib.js_utils import js_escaped_string %>
+
+<style>
+    
+    .ui-chat-container {
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
+    }
+    
+    .ui-chat-container .btn_chat_lancher {
+        display: block;
+        width: 61px;
+        height: 61px;
+        background-color: #6704a8;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        z-index: 999;
+        border-radius: 40px;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+    .ui-chat-container .btn_chat_lancher span.open_me {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg t='1648190896644' class='icon' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg' p-id='4504' width='200' height='200'%3E%3Cpath d='M512 64c259.2 0 469.333333 200.576 469.333333 448s-210.133333 448-469.333333 448a484.48 484.48 0 0 1-232.725333-58.88l-116.394667 50.645333a42.666667 42.666667 0 0 1-58.517333-49.002666l29.76-125.013334C76.629333 703.402667 42.666667 611.477333 42.666667 512 42.666667 264.576 252.8 64 512 64z m0 64C287.488 128 106.666667 300.586667 106.666667 512c0 79.573333 25.557333 155.434667 72.554666 219.285333l5.525334 7.317334 18.709333 24.192-26.965333 113.237333 105.984-46.08 27.477333 15.018667C370.858667 878.229333 439.978667 896 512 896c224.512 0 405.333333-172.586667 405.333333-384S736.512 128 512 128z m-157.696 341.333333a42.666667 42.666667 0 1 1 0 85.333334 42.666667 42.666667 0 0 1 0-85.333334z m159.018667 0a42.666667 42.666667 0 1 1 0 85.333334 42.666667 42.666667 0 0 1 0-85.333334z m158.997333 0a42.666667 42.666667 0 1 1 0 85.333334 42.666667 42.666667 0 0 1 0-85.333334z' fill='%23ffffff' p-id='4505'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+        background-size: 35px;
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: all ease 400ms;
+        transform: scale(0) rotate(40deg);
+        opacity: 0;
+    }
+    
+    .ui-chat-container .btn_chat_lancher span.open_me.active {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;	
+    }
+    
+    .ui-chat-container .btn_chat_lancher span.close_me {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: all ease 400ms;
+        transform: scale(0) rotate(40deg);
+        opacity: 0;
+    }
+    
+    .ui-chat-container .btn_chat_lancher span.close_me:before {
+        content: "";
+        width: 4px;
+        height: 25px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+    
+    .ui-chat-container .btn_chat_lancher span.close_me:after {
+        content: "";
+        width: 4px;
+        height: 25px;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+    .ui-chat-container .btn_chat_lancher span.close_me.active {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;	
+    }
+    
+    .ui-chat-container .btn_chat_lancher:hover,
+    .ui-chat-container .btn_chat_lancher:focus {
+        background:#470771;
+    }
+    
+    .ui-chat-container .step1_wrapper .close {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        background-color: rgba(0, 0, 0, .1);
+        right: 10px;
+        top: 10px;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+    
+    .ui-chat-container .step1_wrapper .close:before {
+        content: "";
+        width: 2px;
+        height: 15px;
+        background-color: rgba(0, 0, 0, .3);
+        border-radius: 2px;
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+    
+    .ui-chat-container .step1_wrapper .close:after {
+        content: "";
+        width: 2px;
+        height: 15px;
+        background-color: rgba(0, 0, 0, .3);
+        border-radius: 2px;
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+    
+    .ui-chat-container .step1_wrapper .close:hover,
+    .ui-chat-container .step1_wrapper .close:focus {
+        background-color: rgba(0, 0, 0, .15);
+    }
+    
+    .ui-chat-container .step1_wrapper {
+        width: calc(100% - 50px);
+        max-width: 385px;
+        height: 220px;
+        position: fixed;
+        bottom: 100px;
+        right: 25px;
+        background: #fbfbfb;
+        border-radius: 10px 10px 12px 12px;
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.06);
+        transition: ease all 300ms;
+        transform: translate(0px, 20px);
+        pointer-events: none;
+        opacity: 0;
+    }
+    
+    .ui-chat-container .step1_wrapper.active {
+        transform: translate(0px, 0px);
+        pointer-events: all;
+        opacity: 1;
+    }
+    
+    .ui-chat-container .step1_wrapper.active.step2 {
+        transform: translate(-20px, 0px);
+        pointer-events: none;
+        opacity: 0;
+    }
+    
+    .ui-chat-container .step1_wrapper .instruction {
+        position: relative;
+        top: 35px;
+    }
+    
+    .ui-chat-container .step1_wrapper .instruction h2 {
+        font-family: 'Lato', sans-serif;
+        padding: 0 1rem;
+        font-size: 23px;
+        color: rgba(18, 26, 49, 0.91);
+    }
+    
+    .ui-chat-container .step1_wrapper .instruction h3 {
+        font-family: 'Lato', sans-serif;
+        padding: 0 1rem;
+        font-size: 18px;
+        padding-right: 70px;
+        padding-top: 5px;
+        color: rgba(18, 26, 49, 0.81);
+    }
+    
+    
+    .single_textus .chat_now_btn {
+        display: block;
+        width: 100%;
+        height: 45px;
+        background: #6704a8;
+        position: absolute;
+        border-radius: 0px 0px 10px 10px;
+        left: 0px;
+        bottom: 0px;
+        border: none;
+        outline: none;
+        color: #FFF;
+        font-family: 'Lato', sans-serif;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    
+    .chat_now_btn:hover,
+    .chat_now_btn:focus {
+        background-color: #470771;
+    }
+    
+    .single_textus .chat_now_btn.textus {
+        left: unset;
+        right: 0px;
+        border-radius: 0px 0px 10px 10px;
+        border-left: 1px solid rgba(123, 30, 30, 0.4);
+    }
+    
+    .ui-chat-container .step2_wrapper {
+        width: calc(100% - 50px);
+        max-width: 385px;
+        min-height: 199px;
+        position: fixed;
+        bottom: 100px;
+        right: 25px;
+        background: #FFF;
+        border-radius: 12px 12px 10px 10px;
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.06);
+        transition: ease all 300ms;
+        transform: translateX(20px);
+        pointer-events: none;
+        opacity: 0;
+    }
+    
+    .ui-chat-container .step2_wrapper.active {
+        transform: translateX(0px);
+        pointer-events: all;
+        opacity: 1;
+    }
+    
+    .ui-chat-container .step2_wrapper.active.step3 {
+        transform: translate(-20px, 0px);
+        pointer-events: none;
+        opacity: 0;
+    }
+    
+    .ui-chat-container .step2_wrapper .header {
+        background: #6704a8;
+        width: 100%;
+        min-height: 40px;
+        border-radius: 10px 10px 0px 0px;
+        color: #FFF;
+        font-family: 'Lato', sans-serif;
+        font-size: 14px;
+        padding-top: 11px;
+        box-sizing: border-box;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .ui-chat-container .step2_wrapper .input-group {
+        min-height: 50px;
+        padding-top: 10px;
+        padding-left: 15px;
+        padding-right: 20px;
+        box-sizing: content-box;
+    }
+    
+    .ui-chat-container .step2_wrapper .input-group label {
+        display: block;
+        font-size: 14px;
+        font-family: 'Lato', sans-serif;
+    }
+    
+    .ui-chat-container .step2_wrapper .input-group input {
+        display: block;
+        width: 100%;
+        height: 40px;
+        border-radius: 3px;
+        border: 1px solid #CCC;
+        margin-top: 10px;
+        background-color: #fbfbfb;
+        padding: 10px;
+        box-sizing: border-box;
+        outline-color: #6704a8;
+        font-family: 'Lato', sans-serif;
+    }
+    
+    .ui-chat-container .step2_wrapper .input-group textarea {
+        display: block;
+        width: 100%;
+        height: 150px;
+        border-radius: 3px;
+        border: 1px solid #CCC;
+        margin-top: 10px;
+        max-width: 100%;
+        max-height: 150px;
+        resize: none;
+        background-color: #fbfbfb;
+        padding: 10px;
+        box-sizing: border-box;
+        outline-color: #6704a8;
+        font-family: 'Lato', sans-serif;
+    }
+    
+    .ui-chat-container .step2_wrapper .input-group span.required {
+        color: red;
+    }
+    
+    .ui-chat-container .step2_wrapper .input-group span#remaining {
+        display: block;
+        font-size: 14px;
+        font-family: 'Lato', sans-serif;
+        padding-top: 5px;
+    }
+    
+    .error{
+        font-size: 12px;
+        color: red;
+        padding-top: 5px;
+        font-family: 'Lato', sans-serif;
+        display: none;
+    }
+    .error.active{
+        display: block;
+    }
+    
+    .ui-chat-container .step2_wrapper .input-group button {
+        display: block;
+        width: 100%;
+        height: 45px;
+        background: #6704a8;
+        border-radius: 3px;
+        border: none;
+        outline: none;
+        color: #FFF;
+        font-family: 'Lato', sans-serif;
+        font-size: 14px;
+        cursor: pointer;
+        margin-bottom: 15px;
+        margin-top: 10px;
+    }
+    
+    .ui-chat-container .step2_wrapper .input-group button:hover,
+    .ui-chat-container .step2_wrapper .input-group button:focus {
+        background-color: #470771;
+    }
+    
+    .ui-chat-container .step3_wrapper {
+        width: calc(100% - 50px);
+        max-width: 385px;
+        min-height: 199px;
+        position: fixed;
+        bottom: 100px;
+        right: 25px;
+        padding: 20px;
+        box-sizing: border-box;
+        background: #FFF;
+        border-radius: 10px 10px 12px 12px;
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.06);
+        transition: ease all 300ms;
+        transform: translate(0px, 20px);
+        pointer-events: none;
+        opacity: 0;
+    }
+    .ui-chat-container .step3_wrapper .instruction svg{
+        width: 40px;
+        margin-bottom: 20px;
+        margin-top: 25px
+    }
+    .ui-chat-container .step3_wrapper .instruction {
+        text-align: center;
+    }
+    
+    .ui-chat-container .step3_wrapper .instruction h2 {
+        font-family: 'Lato', sans-serif;
+        padding: 0px;
+        padding-bottom: 10px;
+        font-size: 17px;
+        color: rgba(18, 26, 49, 0.91);
+    }
+    
+    .ui-chat-container .step3_wrapper .instruction p {
+        font-family: 'Lato', sans-serif;
+        padding-left: 100px;
+        font-size: 17px;
+        padding: 20px 0px;
+        padding-top: 5px;
+        padding-bottom: 0px;
+        color: rgba(18, 26, 49, 0.51);
+    }
+    
+    .ui-chat-container .step3_wrapper .send_it_btn {
+        display: block;
+        width: 100%;
+        height: 45px;
+        background-color: transparent;
+        border-radius: 3px;
+        border: none;
+        outline: none;
+        color: #2B95D6;
+        font-family: 'Lato', sans-serif;
+        font-size: 17px;
+        cursor: pointer;
+        margin-bottom: 15px;
+        margin-top: 0px;
+    }
+    .ui-chat-container .step3_wrapper .send_it_btn:hover,.ui-chat-container .step3_wrapper .send_it_btn:focus{
+        color: #2176ab;
+    }
+    
+    .ui-chat-container .step3_wrapper.active {
+        transform: translate(0px, 0px);
+        pointer-events: all;
+        opacity: 1;
+    }
+
+    .ui-chat-container #selector-top, #selector-bottom {
+        background: blue;
+        height:3px;
+        position: fixed;
+        transition:all 300ms ease;
+    }
+    .ui-chat-container #selector-left, #selector-right {
+        background: blue;
+        width:3px;
+        position: fixed;
+        transition:all 300ms ease;
+    }
+    
+    .n{
+     -webkit-transform: scale(3) translateX(100px)   
+    }
+    
+</style>
+
+<div class="ui-chat-container">
+    <div id="selector">
+        <div id="selector-top"></div>
+        <div id="selector-left"></div>
+        <div id="selector-right"></div>
+        <div id="selector-bottom"></div>
+    </div>
+
+	<button class="btn_chat_lancher">
+		<span class="open_me active"></span>
+		<span class="close_me"></span>
+	</button>
+
+	<div class="step1_wrapper single_textus">
+		<button class="close"></button>
+		<div class="instruction">
+			<h2>Would you like to give us feedback?</h2>
+			<h3>Click here and help us improve this website!</h3>
+		</div>
+		
+		<button class="chat_now_btn textus">Message us</button>
+
+	</div>
+	<div class="step2_wrapper">
+		<div class="header">Feedback Message</div>
+		<form class="submit_chat_form">
+            % if not user.is_authenticated:
+			<div class="input-group">
+				<label>Contact Information<span class="required">*</span></label>
+				<input type="email" name="Email" id="Email" required>
+			</div>
+            % endif
+			<div class="input-group">
+				<label>Question<span class="required">*</span></label>
+				<textarea name="FeedbackText" id="FeedbackText" maxlength="160" required></textarea>
+				<span id="remaining">160/160 characters remaining.<span>
+				<span class="error error-qst">Please enter your feedback</span>
+			</div>
+            <div class="input-group">
+				<label>You can select the part of this page that you find problematic by clicking the select button below. </label>
+				<button class="feedback_selector">Select the Part</button>
+                <input readonly type="text" name="ElementHTML" id="ElementHTML" placeholder="The HTML for the part will appear here">
+			</div>
+			<div class="input-group">
+				<button class="submit_textus" type="submit">Send Message</button>
+			</div>
+		</form>
+	</div>
+	<div class="step3_wrapper">
+		<div class="instruction">
+			<svg t="1648190388076" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2192" width="200" height="200"><path d="M512 0C229.248 0 0 229.248 0 512c0 282.752 229.248 512 512 512 282.688 0 512-229.248 512-512C1024 229.248 794.752 0 512 0zM824.896 364.928l-351.04 343.808c-1.792 2.88-3.904 5.888-6.784 8.768l-16.448 16.512c-9.088 9.088-19.776 13.056-23.936 8.96L259.52 568C255.424 563.904 259.456 553.152 268.544 544.128l16.448-16.448c9.088-9.152 19.84-13.184 23.936-9.088l125.312 131.136 341.312-334.208c9.088-9.088 23.808-9.088 33.024 0l16.384 16.448C833.92 341.056 833.92 355.84 824.896 364.928z" p-id="2193" fill="#369235"></path></svg>
+			<h2>Message received</h2>
+		</div>
+	</div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script type="text/javascript">
+
+jQuery(document).ready(function($) {
+
+    // Handle chat with us button
+    $(".chat_now_btn.textus").click(function(event) {
+        event.preventDefault();
+        $(".ui-chat-container .step1_wrapper").addClass("step2");
+        $(".ui-chat-container .step2_wrapper").addClass("active");
+    });
+
+    // Stop submit form
+    
+    $(".submit_chat_form").on("submit", function(e) {
+    	e.preventDefault();
+        return false;
+    });
+
+    $(".ui-chat-container .btn_chat_lancher,.ui-chat-container .step1_wrapper .close").click(function(event) {
+        event.preventDefault();
+        $(".ui-chat-container .step1_wrapper").toggleClass("active");
+        $(".ui-chat-container .step2_wrapper").removeClass("active");
+        if ($(this).hasClass("close")) {
+            $(".ui-chat-container .btn_chat_lancher .close_me").removeClass("active");
+            $(".ui-chat-container .btn_chat_lancher .open_me").addClass("active");
+        } else {
+            $(".ui-chat-container .btn_chat_lancher .close_me").toggleClass("active");
+            $(".ui-chat-container .btn_chat_lancher .open_me").toggleClass("active");
+        }
+        if ($(".ui-chat-container .step1_wrapper").hasClass("step2") ||
+            $(".ui-chat-container .step2_wrapper").hasClass("step3")) {
+            $(".ui-chat-container .step1_wrapper").removeClass("active step2");
+            $(".ui-chat-container .step2_wrapper").removeClass("active step3");
+            $(".ui-chat-container .step3_wrapper").removeClass("active");
+            if ($(this).hasClass("close")) {
+                $(".ui-chat-container .btn_chat_lancher .close_me").addClass("active");
+                $(".ui-chat-container .btn_chat_lancher .open_me").removeClass("active");
+            } else {
+                $(".ui-chat-container .btn_chat_lancher .close_me").removeClass("active");
+                $(".ui-chat-container .btn_chat_lancher .open_me").addClass("active");
+            }
+        }
+    });
+    
+    // Submit functions
+
+    // Feedback body text remaining counter and handler
+    $('#FeedbackText').on('keyup', function(e) {
+        var max_characters = 160;
+        if ($(this).val().length > max_characters) {
+            $(this).val($(this).val().substr(0, cmax));
+        }
+        $("#remaining").text(max_characters - $(this).val().length + '/' + max_characters + ' characters remaining.');
+    });
+
+    // Selector button
+    var elements = {
+        top: $('#selector-top'),
+        left: $('#selector-left'),
+        right: $('#selector-right'),
+        bottom: $('#selector-bottom')
+    };
+
+    $(".submit_chat_form .feedback_selector").click(function(event) {
+        event.preventDefault();
+
+        document.addEventListener("mousemove", mouseFollower);
+        document.addEventListener("mousedown", mouseFollowerStop);
+
+        // Start hiding the form
+        $(".ui-chat-container .step2_wrapper").addClass("hidden");
+        
+        function mouseFollower(event) {
+            if(event.target.id.indexOf('selector') !== -1 || event.target.tagName === 'BODY' || event.target.tagName === 'HTML') return;
+            
+            var $target = $(event.target);
+                targetOffset = $target[0].getBoundingClientRect(),
+                targetHeight = targetOffset.height,
+                targetWidth  = targetOffset.width;
+            //console.log(targetOffset);
+            
+            $(".submit_chat_form #ElementHTML").val($target[0].outerHTML);
+
+            //console.log($(".submit_chat_form #Element").val());
+
+            elements.top.css({
+                left:  (targetOffset.left - 4),
+                top:   (targetOffset.top - 4),
+                width: (targetWidth + 5)
+            });
+            elements.bottom.css({
+                top:   (targetOffset.top + targetHeight + 1),
+                left:  (targetOffset.left  - 3),
+                width: (targetWidth + 4)
+            });
+            elements.left.css({
+                left:   (targetOffset.left  - 5),
+                top:    (targetOffset.top  - 4),
+                height: (targetHeight + 8)
+            });
+            elements.right.css({
+                left:   (targetOffset.left + targetWidth + 1),
+                top:    (targetOffset.top  - 4),
+                height: (targetHeight + 8)
+            });
+
+        }
+
+        function mouseFollowerStop(event) {
+            event.preventDefault();
+
+            document.removeEventListener('mousemove', mouseFollower);
+            document.removeEventListener("mousedown", mouseFollowerStop);
+
+            // Stop hiding the form
+            $(".ui-chat-container .step2_wrapper").removeClass("hidden");
+
+            // Remove the selector
+            setTimeout(
+                () => {
+                    elements.top.removeAttr('style')
+                    elements.right.removeAttr('style');
+                    elements.left.removeAttr('style');
+                    elements.bottom.removeAttr('style');
+                }, 100)
+        }
+    
+    });
+
+    // validate the form and submit
+    $(".submit_chat_form").validate(
+        {
+            rules: {
+                Email: {
+                    required: true,
+                    email: true
+                },
+                FeedbackText: {
+                    required: true,
+                    minlength: 1
+                }
+            },
+            submitHandler: function(event) {
+
+                $(".submit_chat_form .submit_textus").addClass("disable");
+
+                    
+
+                // collect values
+
+                var form_data = $(".submit_chat_form").serializeArray();
+                console.log(form_data);
+
+                // convert form
+                var form_data_converted = {};
+                for (var i = 0; i < form_data.length; i++) {
+                    form_data_converted[form_data[i].name] = form_data[i].value;
+                }
+
+                // empty the form
+                $(".submit_chat_form")[0].reset();
+
+                // Send values to rudderstack now
+                rudderanalytics.track(
+                    "Page Feedback",
+                    form_data_converted,
+                    () => {
+                        console.log("Feedback sent!");
+                    }
+                );
+
+                $(".ui-chat-container .step2_wrapper").addClass("step3");
+                $(".ui-chat-container .step3_wrapper").addClass("active");
+            }
+        }
+    );
+
+});
+</script>
